@@ -33,6 +33,7 @@ import getAdminInfo from "./functions/GetAdminInfo";
 import getAdminInfoByEmail from "./functions/GetAdminInfoByEmail";
 import listAllMachines from "./functions/ListAllMachines";
 import { listProductsByOwner } from "../PRODUCTS/functions/ListProductsByOwner";
+import { updateAdministrator } from "./functions/UpdateAdministrator";
 
 
 class MainUserAdm implements IUserAdm_usecases {
@@ -93,7 +94,7 @@ class MainUserAdm implements IUserAdm_usecases {
         return deleteClient(params.client_id)
     }
 
-    deleteMachine(params: params): Promise<AdmResponses> {//revisado
+    deleteMachine(data: any, params: params): Promise<AdmResponses> {//revisado
         return deleteMachine(params.machine_id)
     }
 
@@ -104,6 +105,10 @@ class MainUserAdm implements IUserAdm_usecases {
     //PRODUCTS
     registerNewProduct(data: IProducts): Promise<AdmResponses> {//revisado
         return registerNewProduct(data)
+    }
+
+    updateAdm(data: IUserAdm, params: params): Promise<AdmResponses> {
+        return updateAdministrator(params.adm_id, data)
     }
 
     updateClient(data: IUserClient, params: params): Promise<AdmResponses> {//revisado

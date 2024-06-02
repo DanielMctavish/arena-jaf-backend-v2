@@ -5,6 +5,8 @@ export const deleteMachine = async (machine_id: string): Promise<AdmResponses> =
 
     const MachineRepositorie = new PrismaMachineRepositorie()
 
+    console.log("parametros?? ", machine_id)
+
     return new Promise(async (resolve, reject) => {
         
         try {
@@ -12,7 +14,7 @@ export const deleteMachine = async (machine_id: string): Promise<AdmResponses> =
             if (!machine_id) {
                 return reject({
                     status_code: 403,
-                    msg: "machine_id nulo ou inválido"
+                    body: "machine_id nulo ou inválido"
                 })
             }
             const currentMachine = await MachineRepositorie.delete(machine_id)

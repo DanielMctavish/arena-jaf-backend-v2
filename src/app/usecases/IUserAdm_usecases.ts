@@ -20,8 +20,8 @@ export interface params {
     client_id: string
     product_id: string
     local_id: string
-    owner_id:string
-    url_image:string
+    owner_id: string
+    url_image: string
 }
 
 interface IUserAdm_usecases {
@@ -40,6 +40,7 @@ interface IUserAdm_usecases {
     resumeSession(session_status: SESSION_STATUS): void
 
     createNewClient(data: IUserClient): Promise<AdmResponses>
+    updateAdm(data: IUserAdm, params: params): Promise<AdmResponses>
     updateClient(data: IUserClient, params: params): Promise<AdmResponses>
     deleteClient(data: any, params: params): Promise<AdmResponses>
     listAllClients(data: any, params: params): Promise<AdmResponses>

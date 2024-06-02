@@ -1,8 +1,7 @@
 import IUserClient from "../../../entities/IUserClient";
 import { AdmResponses } from "../../IUserAdm_usecases";
 import PrismaUserClientRepositorie from "../../../repositories/PrismaRepositories/PrismaUserClientRepositorie";
-import validator from "../../../../security/validations/Joi";
-import { userClientSchema } from "../../../../security/validations/schemmas-joi/UserClientSchemma";
+
 
 export const updateClient = async (client_id: string, data: IUserClient): Promise<AdmResponses> => {
     const UserClientRepositorie = new PrismaUserClientRepositorie()
