@@ -52,10 +52,11 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
             data: {
                 arenaLocalId: data.arenaLocalId,
                 userAdmId: data.userAdmId,
-                userColabId: data.userColabId
+                userColabId: data.userColabId,
+                status: data.status
             }
         });
-
+ 
         return currentMachine as IMachines
     }
 

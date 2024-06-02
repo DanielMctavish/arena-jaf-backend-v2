@@ -20,6 +20,7 @@ router.delete("/delete-product", verifyToken, ApplyUseCase(mainAdm.deleteNewProd
 router.get("/all-clients", verifyToken, ApplyUseCase(mainAdm.listAllClients))//
 router.get("/all-machines", verifyToken, ApplyUseCase(mainAdm.listAllMachines))//
 
+router.patch("/update-administrator", verifyToken, ApplyUseCase(mainAdm.updateAdm))
 router.patch("/update-local", verifyToken, ApplyUseCase(mainAdm.updateArenaLocation))//
 router.patch("/update-client", verifyToken, ApplyUseCase(mainAdm.updateClient))//
 router.patch("/update-product", verifyToken, ApplyUseCase(mainAdm.updateNewProduct))//
@@ -31,8 +32,8 @@ router.get("/admin-info-email", verifyToken, ApplyUseCase(mainAdm.GetAdminInfoBy
 router.post("/login", ApplyUseCase(mainAdm.login))//testado
 router.post("/logout", verifyToken)
 //FIREBASE......................................................
-router.post("/upload-admin-profile", upload.single('arena-profile'), ApplyUseCase(mainAdm.uploadAdminProfile))
-router.post("/delete-admin-profile", ApplyUseCase(mainAdm.deleteAdminProfile))
+router.post("/upload-admin-profile", upload.single('arena-adm-profile'), ApplyUseCase(mainAdm.uploadAdminProfile))
+router.delete("/delete-admin-profile", ApplyUseCase(mainAdm.deleteAdminProfile))
 
 
 export default router;
