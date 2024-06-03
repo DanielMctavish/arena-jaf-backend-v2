@@ -30,6 +30,17 @@ class PrismaTransactionRepositorie implements ITransactionRepositorie {
             }
         })
     }
+    async list(adm_id?: string): Promise<ITransaction[]> {
+
+        return await prisma.transactions.findMany({
+            where: {
+                userAdmId: adm_id
+            }, orderBy: {
+                created_at: 'desc'
+            }
+        })
+
+    }
     async update(transaction_id: string, data: Partial<ITransaction>): Promise<ITransaction> {
         return await prisma.transactions.update({
             where: { id: transaction_id },

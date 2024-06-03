@@ -4,6 +4,7 @@ import cors from 'cors'
 import administratorRoutes from "./routes/AdministratorRoutes"
 import clientRoutes from "./routes/ClientRoutes"
 import productRoutes from "./routes/ProductRoutes"
+import transactionsRoutes from "./routes/TransactionRoutes"
 import startWebSocketServer from '../websockets/socketServer'
 
 
@@ -25,6 +26,7 @@ app.get('/check', (req, res) => {
 app.use("/adm", administratorRoutes)
 app.use("/client", clientRoutes)
 app.use("/product", productRoutes)
+app.use("/transactions", transactionsRoutes)
 
 
 startWebSocketServer()

@@ -15,6 +15,7 @@ import firebaseDeleteClientProfile from "./firebase/FirebaseDeleteClientProfile"
 import { findClient } from "./functions/FindClient";
 import { listClient } from "./functions/ListClient";
 import { updateClient } from "./functions/UpdateClient";
+import { findClientByEmail } from "./functions/FindClientByEmail";
 
 class MainUserClient implements IUserClient_usecases {
 
@@ -23,6 +24,9 @@ class MainUserClient implements IUserClient_usecases {
     }
     FindClient(data: any, params: params): Promise<IClientResponses> {
         return findClient(params.client_id)
+    }
+    FindClientByEmail(data: any, params: params): Promise<IClientResponses> {
+        return findClientByEmail(params.email)
     }
     ListClient(data: any, params: params): Promise<IClientResponses> {
         return listClient(params.administrator_id)

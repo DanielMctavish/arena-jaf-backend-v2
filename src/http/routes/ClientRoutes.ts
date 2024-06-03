@@ -14,6 +14,7 @@ router.get("/test", (req, res) => {
 
 router.post("/create-client", ApplyUseCase(MainClient.RegisterClient))//testado
 router.get("/find", verifyToken, ApplyUseCase(MainClient.FindClient))//testado
+router.get("/find-by-email", verifyToken, ApplyUseCase(MainClient.FindClientByEmail))// in progress...
 router.get("/list", verifyToken, ApplyUseCase(MainClient.ListClient))//
 router.patch("/update", verifyToken, ApplyUseCase(MainClient.UpdateClient))//
 router.post("/add-credit", verifyToken, ApplyUseCase(MainClient.AddCredit))//testado
