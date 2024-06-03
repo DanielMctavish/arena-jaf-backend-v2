@@ -29,7 +29,8 @@ class PrismaUserClientRepositorie implements IUserClientRepositorie {
 
     async findAll(adm_id: string): Promise<IUserClient[]> {
         const currentClient = await prisma.userClient.findMany({
-            where: { administrator_id: adm_id }
+            where: { administrator_id: adm_id },
+            orderBy: { created_at: 'asc' }
         })
 
         return currentClient as IUserClient[];

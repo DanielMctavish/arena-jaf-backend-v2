@@ -39,6 +39,9 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
         const currentMachine = await prisma.machines.findMany({
             where: {
                 userAdmId: adm_id
+            },
+            orderBy: {
+                created_at: 'asc'
             }
         });
 
@@ -56,7 +59,7 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
                 status: data.status
             }
         });
- 
+
         return currentMachine as IMachines
     }
 

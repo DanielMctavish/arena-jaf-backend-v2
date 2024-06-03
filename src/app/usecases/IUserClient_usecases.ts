@@ -6,6 +6,7 @@ import IUserClient from "../entities/IUserClient";
 
 export interface params {
     adm_id: string
+    email: string
     machine_id: string
     client_id: string
     product_id: string
@@ -16,7 +17,8 @@ export interface params {
 
 interface IUserClient_usecases {
     RegisterClient(data: IUserClient): Promise<IClientResponses>
-    FindClient(data: any, párams: params): Promise<IClientResponses>
+    FindClient(data: any, params: params): Promise<IClientResponses>
+    FindClientByEmail(data: any, params: params): Promise<IClientResponses>
     ListClient(data: any, params: params): Promise<IClientResponses>
     UpdateClient(data: Partial<IUserClient>, params: params): Promise<IClientResponses>
     Login(data: IUserClient): Promise<IClientResponses>
