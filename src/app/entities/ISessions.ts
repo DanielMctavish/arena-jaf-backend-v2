@@ -8,6 +8,8 @@ interface ISessions {
     id: string
     value: number
     duration: number
+    timer_started_at: Date
+    timer_ended_at: Date
     status: SESSION_STATUS
     UserAdm: IUserAdm | any
     adm_id: string

@@ -9,14 +9,17 @@ class PrismaTransactionRepositorie implements ITransactionRepositorie {
 
         const { userAdmId, userClientId, ...restData } = data
 
-
-
         return await prisma.transactions.create({
             data: {
                 ...restData,
                 Client: {
                     connect: {
                         id: userClientId
+                    }
+                },
+                UserAdm: {
+                    connect: {
+                        id: userAdmId
                     }
                 }
             }

@@ -9,7 +9,7 @@ import IUserClient from "../entities/IUserClient"
 
 export interface AdmResponses {
     status_code: number,
-    msg: string,
+    msg?: string,
     body?: Object | null
 }
 

@@ -1,46 +1,59 @@
-import websocket from "ws"
-import PrismaMachineRepositorie from "../app/repositories/PrismaRepositories/PrismaMachineRepositorie"
+import { Server } from 'socket.io';
+import http from 'http';
 
-const prismaMachine = new PrismaMachineRepositorie()
+const PORT = process.env.SOCKET_PORT || 3001;
+const serverHttp = http.createServer();
 
-
-function startWebSocketServer() {
-    const wss = new websocket.WebSocket.Server({
-        port: 3330
-    })
-
-
-    function countInactivity(machineId: string) {
-        return setTimeout(async () => {
-            await prismaMachine.update(machineId, { status: "DESCONECTED" });
-        }, 5000);
-    }
-
-    wss.on('connection', (ws) => {
-        let inactivityTimer: NodeJS.Timeout;
-
-        ws.on('message', async (message: Buffer) => {
-
-            const data = JSON.parse(message.toString());
-            console.log('observando message ->> ', data.machineID);
-
-            try {
-                // Convertendo o buffer para uma string JSON
-                if (data.message === 'message-machine-activity') {
-                    console.log('condição atendida -> ', data.message);
-                    
-                    await prismaMachine.update(data.machineID, { status: "CONECTED" });
-                    // Reinicia o timer de inatividade
-                    clearTimeout(inactivityTimer);
-                    inactivityTimer = countInactivity(data.machineID);
-
-                }
-            } catch (error: any) {
-                console.error('Error processing message:', error.message);
-            }
-        });
-    });
-
+interface IMessengerServiceBody {
+    body: Object,
+    timer: number
 }
 
-export default startWebSocketServer;
+let socketMain: any;
+
+const ioSocket = new Server(serverHttp, {
+    cors: {
+        origin: '*',
+        credentials: true,
+        optionsSuccessStatus: 200,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
+    }
+});
+
+ioSocket.on('connection', (socket) => {
+    socketMain = socket;
+    console.log('A user connected [ID]-> ', socket.id);
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected [ID]-> ', socket.id);
+    });
+
+    socket.on('session-machine-running', (message) => {
+        console.log('Message received from client:', message);
+        // Handle the message
+    });
+});
+
+serverHttp.listen(PORT, () => {
+    console.log(`[ Socket.io Server ] running on PORT: ${PORT}`);
+});
+
+const serverSendMessage = (messageType: string, data: IMessengerServiceBody) => {
+    try {
+        if (socketMain) {
+            socketMain.emit(messageType, {
+                sessionID: socketMain.id, // todas as vezes que um cliente se conectar ele gera este ID
+                data
+            });
+        } else {
+            throw new Error('socketMain is undefined');
+        }
+    } catch (error: any) {
+        console.log('Error at server send message -> ', error.message);
+        if (socketMain) {
+            socketMain.close(); // Fechar a conexão do WebSocket
+        }
+    }
+}
+
+export { serverSendMessage, IMessengerServiceBody };

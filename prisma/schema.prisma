@@ -71,21 +71,23 @@ model ArenaLocal {
 }
 
 model Sessions {
-  id         String         @id @default(cuid())
-  value      Float
-  duration   Int
-  status     SESSION_STATUS
-  UserAdm    UserAdm        @relation(fields: [adm_id], references: [id])
-  adm_id     String
-  Client     UserClient     @relation(fields: [client_id], references: [id])
-  client_id  String
-  location   ArenaLocal     @relation(fields: [local_id], references: [id])
-  local_id   String
-  Machine    Machines       @relation(fields: [machine_id], references: [id])
-  machine_id String
-  products   Products[]
-  created_at DateTime       @default(now())
-  updated_at DateTime       @default(now()) @updatedAt
+  id               String         @id @default(cuid())
+  value            Float
+  duration         Int
+  timer_started_at DateTime
+  timer_ended_at   DateTime
+  status           SESSION_STATUS
+  UserAdm          UserAdm        @relation(fields: [adm_id], references: [id])
+  adm_id           String
+  Client           UserClient     @relation(fields: [client_id], references: [id])
+  client_id        String
+  location         ArenaLocal     @relation(fields: [local_id], references: [id])
+  local_id         String
+  Machine          Machines       @relation(fields: [machine_id], references: [id])
+  machine_id       String
+  products         Products[]
+  created_at       DateTime       @default(now())
+  updated_at       DateTime       @default(now()) @updatedAt
 }
 
 model Products {
@@ -119,18 +121,19 @@ model Transactions {
 }
 
 model Machines {
-  id           String         @id @default(cuid())
+  id           String             @id @default(cuid())
   nano_id      String
+  connection   MACHINE_CONNECTION
   status       MACHINE_STATUS
-  UserAdm      UserAdm        @relation(fields: [userAdmId], references: [id])
+  UserAdm      UserAdm            @relation(fields: [userAdmId], references: [id])
   userAdmId    String
-  UserColab    UserColab?     @relation(fields: [userColabId], references: [id])
+  UserColab    UserColab?         @relation(fields: [userColabId], references: [id])
   userColabId  String?
-  local        ArenaLocal?    @relation(fields: [arenaLocalId], references: [id])
+  local        ArenaLocal?        @relation(fields: [arenaLocalId], references: [id])
   arenaLocalId String
   sessions     Sessions[]
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @default(now()) @updatedAt
+  created_at   DateTime           @default(now())
+  updated_at   DateTime           @default(now()) @updatedAt
 }
 
 enum SESSION_STATUS {
@@ -145,8 +148,10 @@ enum TRANSACTION_TYPE {
 }
 
 enum METHOD_PAYMENT {
+  DEBITO
   CREDITO
   PIX
+  LOCAL
 }
 
 enum STATUS_PAYMENT {
@@ -155,7 +160,12 @@ enum STATUS_PAYMENT {
   CANCEL
 }
 
-enum MACHINE_STATUS {
-  DESCONECTED
+enum MACHINE_CONNECTION {
+  DISCONECTED
   CONECTED
+}
+
+enum MACHINE_STATUS {
+  RUNNING
+  STOPED
 }
