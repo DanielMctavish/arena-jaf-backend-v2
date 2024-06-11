@@ -19,9 +19,11 @@ interface ITransaction {
 
 
 //métodos para pagamento.......................................................
-const METHOD_PAYMENT: { [x: string]: 'CREDITO' | 'PIX' } = {
+const METHOD_PAYMENT: { [x: string]: 'CREDITO' | 'PIX' | 'DEBITO' | 'LOCAL' } = {
+    DEBITO: 'DEBITO',
     CREDITO: 'CREDITO',
-    PIX: 'PIX'
+    PIX: 'PIX',
+    LOCAL: 'LOCAL'
 }
 
 export type METHOD_PAYMENT = typeof METHOD_PAYMENT[keyof typeof METHOD_PAYMENT]
