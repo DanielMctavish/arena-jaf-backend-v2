@@ -35,7 +35,9 @@ interface IUserAdm_usecases {
     createMachine(data: IMachines): Promise<AdmResponses>
     deleteMachine(data: any, params: params): Promise<AdmResponses>
 
+    //SESSIONS................................................................
     createNewSession(data: ISessions): Promise<AdmResponses>
+    findSession(data: any, params: params): Promise<AdmResponses>
     pauseSession(session_status: SESSION_STATUS): void
     resumeSession(session_status: SESSION_STATUS): void
 
@@ -43,8 +45,12 @@ interface IUserAdm_usecases {
     updateAdm(data: IUserAdm, params: params): Promise<AdmResponses>
     updateClient(data: IUserClient, params: params): Promise<AdmResponses>
     deleteClient(data: any, params: params): Promise<AdmResponses>
+
+    //Listagens ..................................................................
     listAllClients(data: any, params: params): Promise<AdmResponses>
     listAllMachines(data: any, params: params): Promise<AdmResponses>
+    listAllLocations(data: any, params: params): Promise<AdmResponses>
+
     addCreditToClient(data: ITransaction): Promise<AdmResponses>
 
     createArenaLocation(data: IArenaLocal): Promise<AdmResponses>

@@ -1,14 +1,16 @@
 import ISessions from "../../../entities/ISessions";
 import { AdmResponses, params } from "../../IUserAdm_usecases";
 import PrismaMachineRepositorie from "../../../repositories/PrismaRepositories/PrismaMachineRepositorie";
-import { sessionInterval } from "./startMachine";
+import PrismaUserClientRepositorie from "../../../repositories/PrismaRepositories/PrismaUserClientRepositorie";
 import { serverSendMessage } from "../../../../websockets/socketServer";
-
-
+import { timerSessionInstance } from "../../../../http/app";
 
 export function stopMachine(data: ISessions, params: params): Promise<AdmResponses> {
 
     const prismaMachine = new PrismaMachineRepositorie()
+    const prismaClient = new PrismaUserClientRepositorie()
+
+    console.log("playing... ")
 
     return new Promise(async (resolve, reject) => {
 
@@ -17,8 +19,9 @@ export function stopMachine(data: ISessions, params: params): Promise<AdmRespons
             await prismaMachine.update(params.machine_id, {
                 status: "STOPED"
             })
-
-            clearInterval(sessionInterval)
+            await prismaClient.update(data.client_id, {
+                isPlaying: false
+            });
 
             serverSendMessage('session-machine-stoped', {
                 body: {
@@ -28,6 +31,13 @@ export function stopMachine(data: ISessions, params: params): Promise<AdmRespons
                 },
                 timer: 0
             });
+
+            timerSessionInstance.stopMachine(params)
+
+            resolve({
+                status_code: 200,
+                body: 'Machine stopped'
+            })
 
         } catch (error) {
             reject({

@@ -17,7 +17,8 @@ class PrismaUserAdmRepositorie implements IUserAdmRepositorie {
         const currentAdm = await prisma.userAdm.findUnique({
             where: { id: adm_id },
             include: {
-                ArenaLocal: true
+                ArenaLocal: true,
+                Machines: true,
             }
         })
 
@@ -27,10 +28,25 @@ class PrismaUserAdmRepositorie implements IUserAdmRepositorie {
     async findByEmail(email: string): Promise<IUserAdm | null> {
 
         const currentAdm = await prisma.userAdm.findUnique({
-            where: { email }
+            where: { email },
+            include: {
+                ArenaLocal: true
+            }
         })
 
         return currentAdm as IUserAdm
+    }
+
+    async list(local_id?: string): Promise<IUserAdm[]> {
+
+        const allAdms = await prisma.userAdm.findMany({
+            orderBy: {
+                created_at: 'asc',
+            }
+        })
+
+        return allAdms as IUserAdm[];
+
     }
 
     async update(adm_id: string, data: Partial<IUserAdm>): Promise<IUserAdm> {

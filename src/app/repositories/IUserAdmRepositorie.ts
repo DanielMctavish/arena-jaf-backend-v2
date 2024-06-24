@@ -4,6 +4,7 @@ interface IUserAdmRepositorie {
     create(data: IUserAdm): Promise<IUserAdm>
     find(adm_id: string): Promise<IUserAdm | null>
     findByEmail(email: string): Promise<IUserAdm | null>
+    list(local_id?: string): Promise<IUserAdm[]>
     update(adm_id: string, data: Partial<IUserAdm>): Promise<IUserAdm>
     delete(adm_id: string): Promise<IUserAdm>
 }

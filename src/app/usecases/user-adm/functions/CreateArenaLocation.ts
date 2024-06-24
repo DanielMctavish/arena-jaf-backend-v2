@@ -1,28 +1,36 @@
 import IArenaLocal from "../../../entities/IArenaLocal";
 import { AdmResponses } from "../../IUserAdm_usecases";
 import PrismaLocalRepositorie from "../../../repositories/PrismaRepositories/PrismaLocalRepositorie";
-import validator from "../../../../security/validations/Joi";
-import { arenaLocalSchema } from "../../../../security/validations/schemmas-joi/ArenaLocalSchemma";
+//import validator from "../../../../security/validations/Joi";
+//import { arenaLocalSchema } from "../../../../security/validations/schemmas-joi/ArenaLocalSchemma";
 
-export const createArenaLocation = async (data: IArenaLocal): Promise<AdmResponses> => {
-    const LocalRepositorie = new PrismaLocalRepositorie()
-    const currentLocal = await LocalRepositorie.create(data)
+const LocalRepositorie = new PrismaLocalRepositorie()
 
-    return new Promise((resolve, reject) => {
+export const createArenaLocation = (data: IArenaLocal): Promise<AdmResponses> => {
+
+    return new Promise(async (resolve, reject) => {
         if (!data) {
             return reject({
-                status_code: 400,
+                status_code: 403,
                 msg: "Dados inválidos"
             })
         }
 
-        validator(arenaLocalSchema, data)
+        try {
 
-        if (!currentLocal) {
-            return reject({ status_code: 401, msg: 'falha ao tentar criar um local', body: currentLocal })
+            const currentLocal = await LocalRepositorie.create(data)
+            const response: AdmResponses = { status_code: 200, msg: 'local criado com sucesso', body: currentLocal }
+            resolve(response);
+
+        } catch (error) {
+            console.log("data informations -> ", data)
+            console.log("error local -> ", error)
+            reject({
+                status_code: 500,
+                msg: "Erro no servidor"
+            })
+
         }
 
-        const response: AdmResponses = { status_code: 200, msg: 'local criado com sucesso', body: currentLocal }
-        resolve(response);
     })
 }

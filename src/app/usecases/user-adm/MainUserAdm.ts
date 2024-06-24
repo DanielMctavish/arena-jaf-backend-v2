@@ -34,6 +34,9 @@ import getAdminInfoByEmail from "./functions/GetAdminInfoByEmail";
 import listAllMachines from "./functions/ListAllMachines";
 import { listProductsByOwner } from "../PRODUCTS/functions/ListProductsByOwner";
 import { updateAdministrator } from "./functions/UpdateAdministrator";
+import { listAllAdmins } from "./functions/ListAllAdms";
+import { listAllLocations } from "./functions/ListAllLocations";
+import findSession from "./functions/FindSession";
 
 
 class MainUserAdm implements IUserAdm_usecases {
@@ -74,12 +77,21 @@ class MainUserAdm implements IUserAdm_usecases {
         return logout(accessToken)
     }
 
+    //SESSIONS..............................................................................
     createNewSession(data: ISessions): Promise<AdmResponses> {//revisado
         return createNewSession(data)
     }
 
+    findSession(params: params): Promise<AdmResponses> {
+        return findSession(params.client_id)
+    }
+
     deleteArenaLocation(params: params): Promise<AdmResponses> {//revisado
         return deleteArenaLocation(params.local_id)
+    }
+
+    listAllAdmins(data: any, params: params): Promise<AdmResponses> {
+        return listAllAdmins(params.local_id)
     }
 
     listAllClients(data: any, params: params): Promise<AdmResponses> {//revisado
@@ -88,6 +100,10 @@ class MainUserAdm implements IUserAdm_usecases {
 
     listAllMachines(data: any, params: params): Promise<AdmResponses> {
         return listAllMachines(params.adm_id)
+    }
+
+    listAllLocations(data: any, params: params): Promise<AdmResponses> {
+        return listAllLocations(params.adm_id)
     }
 
     deleteClient(params: params): Promise<AdmResponses> {//revisado

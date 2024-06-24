@@ -17,9 +17,15 @@ router.post("/create-session", verifyToken, ApplyUseCase(mainAdm.createNewSessio
 router.delete("/delete-client", verifyToken, ApplyUseCase(mainAdm.deleteClient))//
 router.delete("/delete-machine", verifyToken, ApplyUseCase(mainAdm.deleteMachine))//
 router.delete("/delete-product", verifyToken, ApplyUseCase(mainAdm.deleteNewProduct))//
-router.get("/all-clients", verifyToken, ApplyUseCase(mainAdm.listAllClients))//
-router.get("/all-machines", verifyToken, ApplyUseCase(mainAdm.listAllMachines))//
 
+//Listagens................................................................................................
+router.get("/all-clients", verifyToken, ApplyUseCase(mainAdm.listAllClients))//
+router.get("/all-machines", verifyToken, ApplyUseCase(mainAdm.listAllMachines))// worked
+router.get("/all-admins", verifyToken, ApplyUseCase(mainAdm.listAllAdmins)) //worked
+router.get("/all-locations", verifyToken, ApplyUseCase(mainAdm.listAllLocations))// worked
+router.get("/find-session", verifyToken, ApplyUseCase(mainAdm.findSession))// in development
+
+//Updates................................................................................................
 router.patch("/update-administrator", verifyToken, ApplyUseCase(mainAdm.updateAdm))
 router.patch("/update-local", verifyToken, ApplyUseCase(mainAdm.updateArenaLocation))//
 router.patch("/update-client", verifyToken, ApplyUseCase(mainAdm.updateClient))//

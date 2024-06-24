@@ -51,6 +51,7 @@ model UserClient {
   administrator_id String
   Sessions         Sessions[]
   Transactions     Transactions[]
+  isPlaying        Boolean
   created_at       DateTime       @default(now())
   updated_at       DateTime       @default(now()) @updatedAt
 }

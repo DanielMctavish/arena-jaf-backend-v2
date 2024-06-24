@@ -39,11 +39,11 @@ class PrismaSessionRepositorie implements ISessionRepositorie {
         return currentSession as ISessions;
     }
 
-    async find(session_id: string): Promise<ISessions | null> {
+    async find(client_id: string): Promise<ISessions | null> {
 
         const currentSession = await prisma.sessions.findFirst({
             where: {
-                id: session_id
+                client_id: client_id
             }
         })
 

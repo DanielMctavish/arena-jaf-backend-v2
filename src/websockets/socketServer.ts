@@ -22,7 +22,6 @@ const ioSocket = new Server(serverHttp, {
 
 ioSocket.on('connection', (socket) => {
     socketMain = socket;
-    console.log('A user connected [ID]-> ', socket.id);
 
     socket.on('disconnect', () => {
         console.log('User disconnected [ID]-> ', socket.id);
