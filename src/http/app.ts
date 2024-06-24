@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
+import TimerSessions from '../app/arena-cron/TimerSession';
 
 import administratorRoutes from './routes/AdministratorRoutes';
 import clientRoutes from './routes/ClientRoutes';
@@ -11,6 +12,7 @@ import machineRoutes from './routes/MachinesRoutes';
 
 const app = express();
 const serverHttp: any = http.createServer(app);
+const timerSessionInstance = new TimerSessions()
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -31,7 +33,11 @@ app.use('/product', productRoutes);
 app.use('/transactions', transactionsRoutes);
 app.use('/machines', machineRoutes);
 
-serverHttp.listen(process.env.PORT , () => {
-    console.log('[ Arena 1.0] Server running on PORT: ', process.env.PORT )
+
+
+serverHttp.listen(process.env.PORT, () => {
+    console.log('[ Arena 1.0] Server running on PORT: ', process.env.PORT)
 });
+
+export { timerSessionInstance }
 

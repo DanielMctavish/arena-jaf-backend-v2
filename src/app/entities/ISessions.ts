@@ -7,7 +7,7 @@ import UserClient from "./IUserClient"
 interface ISessions {
     id: string
     value: number
-    duration: number
+    duration: number //minutes
     timer_started_at: Date
     timer_ended_at: Date
     status: SESSION_STATUS

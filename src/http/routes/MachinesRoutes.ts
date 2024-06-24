@@ -7,6 +7,6 @@ const router = Router()
 const mainMachine = new MainMachines()
 
 router.post('/start-machine', verifyToken, ApplyUseCase(mainMachine.Start))
-router.post('/stop-machine', verifyToken, ApplyUseCase(mainMachine.Stop))
+router.get('/stop-machine', verifyToken, ApplyUseCase(mainMachine.Stop))
 
 export default router;

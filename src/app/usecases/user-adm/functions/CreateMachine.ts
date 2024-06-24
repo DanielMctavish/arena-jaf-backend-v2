@@ -52,6 +52,7 @@ export const createMachine = async (data: IMachines): Promise<AdmResponses> => {
             const response: AdmResponses = { status_code: 200, msg: 'máquina criada com sucesso', body: machineCreated }
             resolve(response);
         } catch (error: any) {
+            console.log("observando error _>", error)
             return reject({ status_code: 500, msg: 'falha ao criar máquina', body: error })
         }
 

@@ -8,6 +8,7 @@ import PrismaUserClientRepositorie from '../../../repositories/PrismaRepositorie
 import ISessions from '../../../entities/ISessions';
 import ITransaction from '../../../entities/ITransaction';
 import { serverSendMessage } from '../../../../websockets/socketServer';
+import { timerSessionInstance } from '../../../../http/app';
 
 const prismaMachine = new PrismaMachineRepositorie();
 const prismaSession = new PrismaSessionRepositorie();
@@ -56,6 +57,7 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                 status_code: 400,
                 body: 'Saldo insuficiente',
             });
+            return;
         }
         //#######################################################################################################
         try {
@@ -93,6 +95,14 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
             await prismaTransaction.create(transactionData as ITransaction);
             const currenClient = await prismaClient.find(data.client_id);
 
+            if (currenClient?.isPlaying) {
+                reject({
+                    status_code: 400,
+                    body: 'Cliente já está em uma sessão',
+                });
+                return;
+            }
+
             if (!currenClient) {
                 reject({
                     status_code: 404,
@@ -104,6 +114,7 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
             //04 ............................................................................
             await prismaClient.update(data.client_id, {
                 saldo: currenClient.saldo - data.value,
+                isPlaying: true
             });
 
             console.log('initialize session... ');
@@ -145,6 +156,8 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
 
             }, 1000);
 
+            timerSessionInstance.saveSessionInstance(data, sessionInterval, reject)
+
             return resolve({
                 status_code: 200,
                 body: 'Machine is running',
@@ -158,4 +171,4 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
     });
 }
 
-export { sessionInterval, startMachine };
+export { startMachine };

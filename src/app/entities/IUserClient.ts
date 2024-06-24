@@ -8,6 +8,7 @@ interface IUserClient {
     cpf: string
     senha: string
     avatar_url: string
+    isPlaying: boolean
     Administrator: IUserAdm
     administrator_id: string
     created_at: Date
