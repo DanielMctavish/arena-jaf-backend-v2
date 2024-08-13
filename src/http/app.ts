@@ -8,6 +8,7 @@ import administratorRoutes from './routes/AdministratorRoutes';
 import clientRoutes from './routes/ClientRoutes';
 import productRoutes from './routes/ProductRoutes';
 import transactionsRoutes from './routes/TransactionRoutes';
+import sessionsRoutes from "./routes/SessionsRoutes"
 import machineRoutes from './routes/MachinesRoutes';
 
 const app = express();
@@ -31,6 +32,7 @@ app.use('/adm', administratorRoutes);
 app.use('/client', clientRoutes);
 app.use('/product', productRoutes);
 app.use('/transactions', transactionsRoutes);
+app.use('/sessions', sessionsRoutes);
 app.use('/machines', machineRoutes);
 
 

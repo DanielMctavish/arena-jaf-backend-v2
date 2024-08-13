@@ -2,7 +2,7 @@ import IUserAdm from "./IUserAdm"
 import IUserClient from "./IUserClient"
 
 interface ITransaction {
-    id: string
+    id?: string
     value: number
     transaction_type: TRANSACTION_TYPE
     product_description?: string | null
@@ -12,8 +12,8 @@ interface ITransaction {
     userAdmId?: string | any
     Client?: IUserClient | any
     userClientId?: string | any
-    created_at: Date
-    updated_at: Date
+    created_at?: Date
+    updated_at?: Date
 }
 
 

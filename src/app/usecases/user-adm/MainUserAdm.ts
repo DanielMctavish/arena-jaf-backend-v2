@@ -37,6 +37,7 @@ import { updateAdministrator } from "./functions/UpdateAdministrator";
 import { listAllAdmins } from "./functions/ListAllAdms";
 import { listAllLocations } from "./functions/ListAllLocations";
 import findSession from "./functions/FindSession";
+import findLastSession from "./functions/FindLastSession";
 
 
 class MainUserAdm implements IUserAdm_usecases {
@@ -82,11 +83,15 @@ class MainUserAdm implements IUserAdm_usecases {
         return createNewSession(data)
     }
 
-    findSession(params: params): Promise<AdmResponses> {
+    findSession(data: any, params: params): Promise<AdmResponses> {
         return findSession(params.client_id)
     }
 
-    deleteArenaLocation(params: params): Promise<AdmResponses> {//revisado
+    findLastSession(data: any, params: params): Promise<AdmResponses> {
+        return findLastSession(params.client_id)
+    }
+
+    deleteArenaLocation(data: any, params: params): Promise<AdmResponses> {//revisado
         return deleteArenaLocation(params.local_id)
     }
 
@@ -114,7 +119,7 @@ class MainUserAdm implements IUserAdm_usecases {
         return deleteMachine(params.machine_id)
     }
 
-    deleteNewProduct(params: params): Promise<AdmResponses> {//revisado
+    deleteNewProduct(data: any, params: params): Promise<AdmResponses> {//revisado
         return deleteNewProduct(params.product_id)
     }
 

@@ -1,4 +1,4 @@
-// startMachine.ts
+import axios from "axios"
 import { AdmResponses, params } from '../../IUserAdm_usecases';
 import dayjs from 'dayjs';
 import PrismaMachineRepositorie from '../../../repositories/PrismaRepositories/PrismaMachineRepositorie';
@@ -7,8 +7,8 @@ import PrismaTransactionRepositorie from '../../../repositories/PrismaRepositori
 import PrismaUserClientRepositorie from '../../../repositories/PrismaRepositories/PrismaUserClientRepositorie';
 import ISessions from '../../../entities/ISessions';
 import ITransaction from '../../../entities/ITransaction';
-import { serverSendMessage } from '../../../../websockets/socketServer';
 import { timerSessionInstance } from '../../../../http/app';
+
 
 const prismaMachine = new PrismaMachineRepositorie();
 const prismaSession = new PrismaSessionRepositorie();
@@ -68,31 +68,8 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                 });
                 return;
             }
-            //01 ....................................................................
-            await prismaMachine.update(currentMachine, {
-                status: 'RUNNING',
-            });
 
-            const timeStarted = dayjs().toDate();
-            const timeEnded = dayjs().add(data.duration, 'minutes').toDate();
-
-            //02 .................................................................
-            await prismaSession.create({
-                ...data,
-                timer_started_at: timeStarted,
-                timer_ended_at: timeEnded,
-            });
-
-            const transactionData: Partial<ITransaction> = {
-                value: currentValue,
-                transaction_type: 'MACHINE_CREDIT',
-                method: 'LOCAL',
-                status: 'APPROVED',
-                userAdmId: data.adm_id,
-                userClientId: data.client_id,
-            };
-            //03 ............................................................................
-            await prismaTransaction.create(transactionData as ITransaction);
+            //CLIENT verify................................................................
             const currenClient = await prismaClient.find(data.client_id);
 
             if (currenClient?.isPlaying) {
@@ -119,21 +96,48 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
 
             console.log('initialize session... ');
 
+            //01 CLIENT...PLAY.................................................................
+            await prismaMachine.update(currentMachine, {
+                status: 'RUNNING',
+            });
+
+            const timeStarted = dayjs().toDate();
+            const timeEnded = dayjs().add(data.duration, 'minutes').toDate();
+
+            //02  SESSION .................................................................
+            await prismaSession.create({
+                ...data,
+                timer_started_at: timeStarted,
+                timer_ended_at: timeEnded,
+            });
+
+            //03 TRANSACTION...............................................................
+            const transactionData: Partial<ITransaction> = {
+                value: currentValue,
+                transaction_type: 'MACHINE_CREDIT',
+                method: 'LOCAL',
+                status: 'APPROVED',
+                userAdmId: data.adm_id,
+                userClientId: data.client_id,
+            };
+            await prismaTransaction.create(transactionData as ITransaction);
+
+            console.clear()
             // INTERVALO ----------------------------------------------------------------
             sessionInterval = setInterval(async () => {
                 currentTimer++;
 
-                //MESSAGE ...
-                serverSendMessage('session-machine-running',
-                    {
+                try {
+                    await axios.post(`${process.env.API_URL_WEBSOCKET}/websocket/sent-message?message_type=${data.machine_id}-running`, {
                         body: {
                             machine_id: data.machine_id,
                             client_id: data.client_id,
-                            timer: currentTimer,
                         },
-                        timer: currentTimer
-                    }
-                );
+                        cronTimer: currentTimer,
+                    })
+                } catch (error: any) {
+                    console.log("error ao tentar enviar mensagem websocket", error.response);
+                }
 
                 if (dayjs(timeEnded).valueOf() <= dayjs().valueOf()) {
                     console.log('session ended');
@@ -143,14 +147,6 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                         status: 'STOPED',
                     });
 
-                    serverSendMessage('session-machine-end', {
-                        body: {
-                            machine_id: data.machine_id,
-                            client_id: data.client_id,
-
-                        },
-                        timer: currentTimer
-                    });
                     return;
                 }
 
@@ -163,6 +159,8 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                 body: 'Machine is running',
             });
         } catch (error: any) {
+            console.clear()
+            console.log("error at try run machine: ", error.message)
             return reject({
                 status_code: 500,
                 body: 'server error',
