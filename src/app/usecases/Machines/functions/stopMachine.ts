@@ -1,48 +1,53 @@
+import axios from "axios";
 import ISessions from "../../../entities/ISessions";
 import { AdmResponses, params } from "../../IUserAdm_usecases";
 import PrismaMachineRepositorie from "../../../repositories/PrismaRepositories/PrismaMachineRepositorie";
 import PrismaUserClientRepositorie from "../../../repositories/PrismaRepositories/PrismaUserClientRepositorie";
-import { serverSendMessage } from "../../../../websockets/socketServer";
 import { timerSessionInstance } from "../../../../http/app";
 
-export function stopMachine(data: ISessions, params: params): Promise<AdmResponses> {
+export function stopMachine(data: ISessions): Promise<AdmResponses> {
 
     const prismaMachine = new PrismaMachineRepositorie()
     const prismaClient = new PrismaUserClientRepositorie()
 
-    console.log("playing... ")
-
     return new Promise(async (resolve, reject) => {
 
+        console.log("observando data: ", data)
+    
         try {
 
-            await prismaMachine.update(params.machine_id, {
+            await prismaMachine.update(data.machine_id, {
                 status: "STOPED"
             })
+
             await prismaClient.update(data.client_id, {
                 isPlaying: false
             });
 
-            serverSendMessage('session-machine-stoped', {
-                body: {
-                    machine_id: data.machine_id,
-                    client_id: data.client_id,
 
-                },
-                timer: 0
-            });
+            try {
+                await axios.post(`${process.env.API_URL_WEBSOCKET}/websocket/sent-message?message_type=${data.machine_id}-stopped`, {
+                    body: {
+                        machine_id: data.machine_id,
+                        client_id: data.client_id,
+                    },
+                    cronTimer: 0,
+                })
+            } catch (error) {
+                console.log("error ao tentar enviar mensagem websocket")
+            }
 
-            timerSessionInstance.stopMachine(params)
+            timerSessionInstance.stopMachine(data)
 
             resolve({
                 status_code: 200,
                 body: 'Machine stopped'
             })
 
-        } catch (error) {
+        } catch (error:any) {
             reject({
                 status_code: 500,
-                msg: "server error"
+                body: error.message
             })
         }
 

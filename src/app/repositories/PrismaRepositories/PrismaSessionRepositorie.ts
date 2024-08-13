@@ -44,6 +44,8 @@ class PrismaSessionRepositorie implements ISessionRepositorie {
         const currentSession = await prisma.sessions.findFirst({
             where: {
                 client_id: client_id
+            }, include: {
+                Machine: true
             }
         })
 
@@ -57,6 +59,43 @@ class PrismaSessionRepositorie implements ISessionRepositorie {
                 client_id: client_id
             }
         })
+
+        return currentSession as ISessions[];
+    }
+
+    async findLastSession(client_id: string): Promise<ISessions> {
+
+        const currentSession = await prisma.sessions.findMany({
+            where: {
+                client_id: client_id
+            },
+            include: {
+                Machine: true
+            },
+            orderBy: {
+                created_at: 'desc'
+            },
+            take: 1
+        });
+
+        // Retorna a primeira (e única) sessão da lista
+        return currentSession[0] as ISessions;
+    }
+
+    async listAllSessions(adm_id: string): Promise<ISessions[]> {
+
+        const currentSession = await prisma.sessions.findMany({
+            where: {
+                adm_id: adm_id
+            },
+            include: {
+                Machine: true,
+                Client: true
+            },
+            orderBy: {
+                created_at: 'desc'
+            },
+        });
 
         return currentSession as ISessions[];
     }

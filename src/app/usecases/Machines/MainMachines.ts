@@ -11,8 +11,8 @@ class MainMachines implements IMachine_usecases {
         return await startMachine(data, params);
     }
 
-    Stop(data: ISessions, params: params): Promise<AdmResponses> {
-        return stopMachine(data, params)
+    Stop(data: ISessions): Promise<AdmResponses> {
+        return stopMachine(data)
     }
 }
 

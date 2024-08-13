@@ -14,8 +14,10 @@ router.post("/create-local", verifyToken, ApplyUseCase(mainAdm.createArenaLocati
 router.post("/create-machine", verifyToken, ApplyUseCase(mainAdm.createMachine))//testado doc
 router.post("/create-client", verifyToken, ApplyUseCase(mainAdm.createNewClient))//
 router.post("/create-session", verifyToken, ApplyUseCase(mainAdm.createNewSession))//
+
+//Remoções.................................................................................................
 router.delete("/delete-client", verifyToken, ApplyUseCase(mainAdm.deleteClient))//
-router.delete("/delete-machine", verifyToken, ApplyUseCase(mainAdm.deleteMachine))//
+router.delete("/delete-machine", verifyToken, ApplyUseCase(mainAdm.deleteMachine))//testing...
 router.delete("/delete-product", verifyToken, ApplyUseCase(mainAdm.deleteNewProduct))//
 
 //Listagens................................................................................................
@@ -24,6 +26,7 @@ router.get("/all-machines", verifyToken, ApplyUseCase(mainAdm.listAllMachines))/
 router.get("/all-admins", verifyToken, ApplyUseCase(mainAdm.listAllAdmins)) //worked
 router.get("/all-locations", verifyToken, ApplyUseCase(mainAdm.listAllLocations))// worked
 router.get("/find-session", verifyToken, ApplyUseCase(mainAdm.findSession))// in development
+router.get("/find-last-session", verifyToken, ApplyUseCase(mainAdm.findLastSession))// in development
 
 //Updates................................................................................................
 router.patch("/update-administrator", verifyToken, ApplyUseCase(mainAdm.updateAdm))

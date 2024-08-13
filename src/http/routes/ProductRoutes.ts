@@ -13,6 +13,10 @@ router.get("/list-products", verifyToken, ApplyUseCase(mainProduct.ListProducts)
 router.patch("/update-product", verifyToken, ApplyUseCase(mainProduct.UpdateNewProduct))// testado
 router.delete("/delete-product", verifyToken, ApplyUseCase(mainProduct.DeleteNewProduct))// testado
 
+//COMERCIAL PRODUCTS................................................................
+
+router.post("/buy-product", verifyToken, ApplyUseCase(mainProduct.BuyProduct))// in development
+
 //FIREBASE
 router.post("/upload-product-cover-img", upload.single('product-arena-cover'), ApplyUseCase(mainProduct.UploadProductCoverImg))//testado
 router.delete("/delete-product-cover-img", ApplyUseCase(mainProduct.DeleteProductCoverImg))//testado

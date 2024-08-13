@@ -8,7 +8,7 @@ export const deleteMachine = async (machine_id: string): Promise<AdmResponses> =
     console.log("parametros?? ", machine_id)
 
     return new Promise(async (resolve, reject) => {
-        
+
         try {
 
             if (!machine_id) {
@@ -21,11 +21,11 @@ export const deleteMachine = async (machine_id: string): Promise<AdmResponses> =
             const response: AdmResponses = { status_code: 200, msg: 'máquina deletada com sucesso', body: currentMachine }
             resolve(response);
 
-        } catch (error) {
-            
+        } catch (error: any) {
+
             reject({
                 status_code: 500,
-                msg: "Erro no servidor"
+                body: error.message
             })
 
         }

@@ -39,6 +39,8 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
         const currentMachine = await prisma.machines.findMany({
             where: {
                 userAdmId: adm_id
+            }, include: {
+                sessions: true
             },
             orderBy: {
                 created_at: 'asc'
@@ -47,6 +49,8 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
 
         return currentMachine as IMachines[];
     }
+
+    
 
     async update(machine_id: string, data: Partial<IMachines>): Promise<IMachines> {
 
@@ -64,8 +68,19 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
     }
 
     async delete(machine_id: string): Promise<IMachines> {
-        const currentMachine = await prisma.machines.delete({ where: { id: machine_id } });
-        return currentMachine as IMachines
+        // Deleta os registros na tabela Sessions que referenciam a máquina
+        await prisma.sessions.deleteMany({
+            where: {
+                machine_id: machine_id,
+            },
+        });
+
+        // Agora que as dependências foram removidas, delete a máquina
+        const currentMachine = await prisma.machines.delete({
+            where: { id: machine_id },
+        });
+
+        return currentMachine as IMachines;
     }
 }
 

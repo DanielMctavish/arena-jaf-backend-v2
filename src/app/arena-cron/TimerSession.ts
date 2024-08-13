@@ -1,6 +1,5 @@
 import ISessions from "../entities/ISessions";
 
-
 //(currentInterval: any, data: ISessions, reject: any) 
 
 class TimerSessions {

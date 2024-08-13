@@ -1,6 +1,6 @@
 import { FilePhoto } from "../../../utils/Firebase/FirebaseOperations";
 import IProducts from "../../entities/IProducts";
-import IProduct_usecases from "../IProduct_usecases";
+import IProduct_usecases, { IBuyProduct } from "../IProduct_usecases";
 import { AdmResponses, params } from "../IUserAdm_usecases";
 import { updateNewProduct } from "../user-adm/functions/UpdateNewProduct";
 import firebaseDeleteProductCover from "./firebase/FirebaseDeleteProductCover";
@@ -8,6 +8,7 @@ import firebaseUploadProductCover from "./firebase/FirebaseUploadProductCover";
 import { deleteNewProduct } from "./functions/DeleteNewProduct";
 import { listProductsByOwner } from "./functions/ListProductsByOwner";
 import { registerNewProduct } from "./functions/RegisterNewProduct";
+import { buyProduct } from "./Shop/BuyProduct";
 
 
 
@@ -24,6 +25,12 @@ class MainProduct implements IProduct_usecases {
     DeleteNewProduct(data: any, params: params): Promise<AdmResponses> {
         return deleteNewProduct(params.product_id)
     }
+    //SHOP
+
+    BuyProduct(data: IBuyProduct): Promise<AdmResponses> {
+        return buyProduct(data)
+    }
+
     //FIREBASE
     UploadProductCoverImg(data: any, params: params, File: FilePhoto): Promise<AdmResponses> {
         return firebaseUploadProductCover(File)

@@ -38,6 +38,7 @@ interface IUserAdm_usecases {
     //SESSIONS................................................................
     createNewSession(data: ISessions): Promise<AdmResponses>
     findSession(data: any, params: params): Promise<AdmResponses>
+    findLastSession(data: any, params: params): Promise<AdmResponses>
     pauseSession(session_status: SESSION_STATUS): void
     resumeSession(session_status: SESSION_STATUS): void
 

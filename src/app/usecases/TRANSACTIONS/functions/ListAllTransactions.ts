@@ -1,7 +1,7 @@
 import PrismaTransactionRepositorie from "../../../repositories/PrismaRepositories/PrismaTransactionRepositorie";
 import { AdmResponses } from "../../IUserAdm_usecases";
 
-export const ListAllTransactions = async (adm_id?: string): Promise<AdmResponses> => {
+export const ListAllTransactions = async (adm_id: string): Promise<AdmResponses> => {
     const TransactionsRepositorie = new PrismaTransactionRepositorie()
 
     return new Promise(async (resolve, reject) => {
