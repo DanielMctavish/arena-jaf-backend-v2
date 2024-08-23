@@ -43,6 +43,9 @@ model UserClient {
   id               String         @id @default(cuid())
   email            String
   saldo            Float
+  horas            Float?
+  tel              String?
+  address          String?
   nome             String
   cpf              String
   senha            String
@@ -51,6 +54,7 @@ model UserClient {
   administrator_id String
   Sessions         Sessions[]
   Transactions     Transactions[]
+  Events           IEvents[]
   isPlaying        Boolean
   created_at       DateTime       @default(now())
   updated_at       DateTime       @default(now()) @updatedAt
@@ -73,7 +77,6 @@ model ArenaLocal {
 
 model Sessions {
   id               String         @id @default(cuid())
-  value            Float
   duration         Int
   timer_started_at DateTime
   timer_ended_at   DateTime
@@ -110,6 +113,7 @@ model Transactions {
   id                  String           @id @default(cuid())
   value               Float
   transaction_type    TRANSACTION_TYPE
+  fluxo               FLOW_TYPE
   product_description String?
   method              METHOD_PAYMENT
   status              STATUS_PAYMENT
@@ -126,6 +130,7 @@ model Machines {
   nano_id      String
   connection   MACHINE_CONNECTION
   status       MACHINE_STATUS
+  type         MACHINE_TYPE
   UserAdm      UserAdm            @relation(fields: [userAdmId], references: [id])
   userAdmId    String
   UserColab    UserColab?         @relation(fields: [userColabId], references: [id])
@@ -137,6 +142,17 @@ model Machines {
   updated_at   DateTime           @default(now()) @updatedAt
 }
 
+model IEvents {
+  id          String       @id @default(cuid())
+  title       String
+  value       Float
+  members     UserClient[]
+  description String
+  cover_url   String
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @default(now()) @updatedAt
+}
+
 enum SESSION_STATUS {
   RUNNING
   PAUSED
@@ -146,6 +162,11 @@ enum TRANSACTION_TYPE {
   PRODUCT
   MACHINE_CREDIT
   SPLIT
+}
+
+enum FLOW_TYPE {
+  IN
+  OUT
 }
 
 enum METHOD_PAYMENT {
@@ -169,4 +190,13 @@ enum MACHINE_CONNECTION {
 enum MACHINE_STATUS {
   RUNNING
   STOPED
+}
+
+enum MACHINE_TYPE {
+  PC
+  XBOX
+  PS5
+  VR
+  FLIPERAMA
+  SIMULATOR
 }

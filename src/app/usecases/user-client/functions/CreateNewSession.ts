@@ -40,12 +40,12 @@ export const createNewSession = async (data: ISessions): Promise<IClientResponse
             }
 
             //operation create session
-            const { duration, value, ...restData } = data
-            const currentSession = await prismaSession.create({ ...restData, duration, value })
+            const { duration, ...restData } = data
+            const currentSession = await prismaSession.create({ ...restData, duration })
 
             if (!currentSession) return reject({ status_code: 400, message: 'erro ao tentar criar sessão', body: currentSession })
 
-            await prismaUserAdm.update(adm.id, { saldo: adm.saldo + currentSession.value })
+            
 
             const response: IClientResponses = { status_code: 201, body: { msg: 'sessão criada com sucesso', body: currentSession } }
             resolve(response);

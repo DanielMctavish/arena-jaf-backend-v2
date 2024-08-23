@@ -9,20 +9,32 @@ export function stopMachine(data: ISessions): Promise<AdmResponses> {
 
     const prismaMachine = new PrismaMachineRepositorie()
     const prismaClient = new PrismaUserClientRepositorie()
+    console.log("stop step 2")
 
     return new Promise(async (resolve, reject) => {
 
         console.log("observando data: ", data)
-    
+
         try {
+
+            const currentClient = await prismaClient.find(data.client_id)
+            if (!currentClient) {
+                reject({
+                    status_code: 404,
+                    body: "client not founded"
+                })
+                return
+            }
 
             await prismaMachine.update(data.machine_id, {
                 status: "STOPED"
             })
 
-            await prismaClient.update(data.client_id, {
-                isPlaying: false
-            });
+            currentClient.horas && data.elapsed_time &&
+                await prismaClient.update(data.client_id, {
+                    isPlaying: false,
+                    horas: currentClient.horas - (data.elapsed_time / 3600)
+                });
 
 
             try {
@@ -44,7 +56,7 @@ export function stopMachine(data: ISessions): Promise<AdmResponses> {
                 body: 'Machine stopped'
             })
 
-        } catch (error:any) {
+        } catch (error: any) {
             reject({
                 status_code: 500,
                 body: error.message

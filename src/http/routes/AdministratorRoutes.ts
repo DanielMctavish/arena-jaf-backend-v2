@@ -10,6 +10,7 @@ const upload = multer()
 
 router.post("/create-account", ApplyUseCase(mainAdm.CreateAdm))//testado doc
 router.post("/add-credit", verifyToken, ApplyUseCase(mainAdm.addCreditToClient))//testado doc
+router.post("/add-hour", verifyToken, ApplyUseCase(mainAdm.AddHourToClient))//testado doc
 router.post("/create-local", verifyToken, ApplyUseCase(mainAdm.createArenaLocation))//testado doc
 router.post("/create-machine", verifyToken, ApplyUseCase(mainAdm.createMachine))//testado doc
 router.post("/create-client", verifyToken, ApplyUseCase(mainAdm.createNewClient))//

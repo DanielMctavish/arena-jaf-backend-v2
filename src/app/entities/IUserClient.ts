@@ -4,6 +4,9 @@ interface IUserClient {
     id: string
     email: string
     saldo: number
+    horas?: number
+    tel?: string
+    address?: string
     nome: string
     cpf: string
     senha: string

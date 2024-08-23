@@ -6,6 +6,8 @@ export const ListAllTransactions = async (adm_id: string): Promise<AdmResponses>
 
     return new Promise(async (resolve, reject) => {
 
+        console.log("observando operação: ", adm_id)
+
         try {
 
             const allTransactions = await TransactionsRepositorie.list(adm_id)

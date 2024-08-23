@@ -5,6 +5,7 @@ interface ITransaction {
     id?: string
     value: number
     transaction_type: TRANSACTION_TYPE
+    fluxo: FLOW_TYPE
     product_description?: string | null
     method: METHOD_PAYMENT
     status: STATUS_PAYMENT
@@ -44,6 +45,12 @@ const TRANSACTION_TYPE: { [x: string]: 'PRODUCT' | 'MACHINE_CREDIT' | 'SPLIT' } 
     SPLIT: 'SPLIT'
 }
 
+const FLOW_TYPE: { [x: string]: 'IN' | 'OUT' } = {
+    IN: 'IN',
+    OUT: 'OUT',
+}
+
 export type TRANSACTION_TYPE = typeof TRANSACTION_TYPE[keyof typeof TRANSACTION_TYPE]
+export type FLOW_TYPE = typeof FLOW_TYPE[keyof typeof FLOW_TYPE]
 
 export default ITransaction;
