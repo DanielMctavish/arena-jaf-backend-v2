@@ -25,6 +25,7 @@ export const buyProduct = (data: IBuyProduct): Promise<AdmResponses> => {
                 method: 'LOCAL',
                 value: data.value,
                 transaction_type: 'PRODUCT',
+                fluxo: 'OUT',
                 status: 'APPROVED',
                 userClientId: data.client_id,
                 userAdmId: currentProduct.owner_id

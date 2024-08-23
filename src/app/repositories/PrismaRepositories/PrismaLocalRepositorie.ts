@@ -25,18 +25,33 @@ class PrismaLocalRepositorie implements ILocalRepositorie {
         })
     }
 
-    async list(adm_id: string): Promise<IArenaLocal[]> {
-
-       return await prisma.arenaLocal.findMany({
+    async list(adm_id: string): Promise<Partial<IArenaLocal[]>> {
+        const result = await prisma.arenaLocal.findMany({
             where: {
                 userAdmId: adm_id
-            }, 
+            },
+            include: {
+                Machines: true,
+                Sessions: {
+                    include: {
+                        UserAdm: true,
+                        Client: true,
+                        location: true,
+                        Machine: {
+                            include: { sessions: true }
+                        },
+                        products: true,
+                    }
+                },
+            },
             orderBy: {
                 created_at: 'asc'
             }
-        })
+        });
 
+        return result;
     }
+
 
     async update(local_id: string, data: Partial<IArenaLocal>): Promise<IArenaLocal> {
         return await prisma.arenaLocal.update({

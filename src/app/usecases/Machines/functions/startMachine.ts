@@ -19,7 +19,9 @@ let sessionInterval: any;
 
 async function startMachine(data: ISessions, params: params): Promise<AdmResponses> {
     let currentTimer: number = 0;
-    const currentValue: number = data.value;
+
+    console.log("observando duração: ", data.duration / 60)
+
     const currentMachine: string = data.machine_id;
 
     return new Promise(async (resolve, reject) => {
@@ -52,13 +54,7 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
             });
             return;
         }
-        if (isClient?.saldo < data.value) {
-            reject({
-                status_code: 400,
-                body: 'Saldo insuficiente',
-            });
-            return;
-        }
+
         //#######################################################################################################
         try {
             if (!data) {
@@ -72,6 +68,14 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
             //CLIENT verify................................................................
             const currenClient = await prismaClient.find(data.client_id);
 
+            if (!currenClient) {
+                reject({
+                    status_code: 404,
+                    body: 'client not founded',
+                });
+                return;
+            }
+
             if (currenClient?.isPlaying) {
                 reject({
                     status_code: 400,
@@ -80,17 +84,16 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                 return;
             }
 
-            if (!currenClient) {
+            if (currenClient.horas && currenClient.horas < (data.duration / 60)) {
                 reject({
-                    status_code: 404,
-                    body: 'Cliente não encontrado',
+                    status_code: 403,
+                    body: 'horas insuficientes',
                 });
                 return;
             }
 
             //04 ............................................................................
             await prismaClient.update(data.client_id, {
-                saldo: currenClient.saldo - data.value,
                 isPlaying: true
             });
 
@@ -111,16 +114,6 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                 timer_ended_at: timeEnded,
             });
 
-            //03 TRANSACTION...............................................................
-            const transactionData: Partial<ITransaction> = {
-                value: currentValue,
-                transaction_type: 'MACHINE_CREDIT',
-                method: 'LOCAL',
-                status: 'APPROVED',
-                userAdmId: data.adm_id,
-                userClientId: data.client_id,
-            };
-            await prismaTransaction.create(transactionData as ITransaction);
 
             console.clear()
             // INTERVALO ----------------------------------------------------------------
@@ -146,6 +139,12 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                     await prismaMachine.update(currentMachine, {
                         status: 'STOPED',
                     });
+
+                    if (currenClient.horas)
+                        await prismaClient.update(data.client_id, {
+                            isPlaying: false,
+                            horas: currenClient.horas - (data.duration / 60)
+                        })
 
                     return;
                 }

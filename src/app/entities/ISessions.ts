@@ -6,8 +6,8 @@ import UserClient from "./IUserClient"
 
 interface ISessions {
     id: string
-    value: number
     duration: number //minutes
+    elapsed_time?: number
     timer_started_at: Date
     timer_ended_at: Date
     status: SESSION_STATUS
@@ -15,7 +15,7 @@ interface ISessions {
     adm_id: string
     Client: UserClient | any
     client_id: string
-    location: IArenaLocal| any
+    location: IArenaLocal | any
     local_id: string
     Machine: IMachines
     machine_id: string

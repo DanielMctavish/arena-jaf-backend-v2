@@ -14,7 +14,7 @@ const getAdminInfo = (adm_id: string): Promise<AdmResponses> => {
             if (!currentAdm) {
                 return reject({
                     status_code: 404,
-                    body:{
+                    body: {
                         msg: "Admin not found"
                     }
                 })

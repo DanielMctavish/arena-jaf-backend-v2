@@ -38,6 +38,7 @@ import { listAllAdmins } from "./functions/ListAllAdms";
 import { listAllLocations } from "./functions/ListAllLocations";
 import findSession from "./functions/FindSession";
 import findLastSession from "./functions/FindLastSession";
+import { addHourToClient } from "./functions/AddHourToClient";
 
 
 class MainUserAdm implements IUserAdm_usecases {
@@ -56,6 +57,10 @@ class MainUserAdm implements IUserAdm_usecases {
 
     addCreditToClient(data: ITransaction): Promise<AdmResponses> {//revisado
         return addCreditToClient(data)
+    }
+
+    AddHourToClient(data: ITransaction, params: params): Promise<AdmResponses> {
+        return addHourToClient(data, params.horas)
     }
 
     createArenaLocation(data: IArenaLocal): Promise<AdmResponses> {//revisado

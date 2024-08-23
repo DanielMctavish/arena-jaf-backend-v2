@@ -46,8 +46,8 @@ class PrismaUserClientRepositorie implements IUserClientRepositorie {
 
     async update(client_id: string, data: Partial<IUserClient>): Promise<IUserClient> {
 
-        const { avatar_url, administrator_id, cpf, email, nome, saldo, isPlaying } = data
-        const newData = { avatar_url, administrator_id, cpf, email, nome, saldo, isPlaying }
+        const { avatar_url, administrator_id, cpf, email, nome, saldo, horas, isPlaying } = data
+        const newData = { avatar_url, administrator_id, cpf, email, nome, saldo, horas, isPlaying }
 
         const currentClient = await prisma.userClient.update({
             where: { id: client_id },

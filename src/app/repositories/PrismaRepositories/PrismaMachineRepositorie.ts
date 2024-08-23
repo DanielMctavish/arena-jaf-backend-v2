@@ -30,7 +30,13 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
 
 
     async find(machine_id: string): Promise<IMachines | null> {
-        const currentMachine = await prisma.machines.findFirst({ where: { id: machine_id } });
+        const currentMachine = await prisma.machines.findFirst({
+            where: {
+                id: machine_id
+            }, include: {
+                sessions: true
+            }
+        });
         return currentMachine as IMachines;
     }
 
@@ -50,7 +56,7 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
         return currentMachine as IMachines[];
     }
 
-    
+
 
     async update(machine_id: string, data: Partial<IMachines>): Promise<IMachines> {
 

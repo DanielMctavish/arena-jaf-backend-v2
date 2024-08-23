@@ -102,7 +102,7 @@ class PrismaSessionRepositorie implements ISessionRepositorie {
 
     async update(session_id: string, data: Partial<ISessions>): Promise<ISessions> {
 
-        const { duration, products, status, value } = data
+        const { duration, products, status } = data
 
         const currentSession = await prisma.sessions.update({
             where: { id: session_id },
@@ -110,7 +110,6 @@ class PrismaSessionRepositorie implements ISessionRepositorie {
                 duration,
                 products,
                 status,
-                value
             }
         })
 

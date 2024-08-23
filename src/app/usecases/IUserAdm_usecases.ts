@@ -14,6 +14,7 @@ export interface AdmResponses {
 }
 
 export interface params {
+    horas: string
     adm_id: string
     email: string
     machine_id: string
@@ -22,6 +23,8 @@ export interface params {
     local_id: string
     owner_id: string
     url_image: string
+    startDate: string
+    endDate: string
 }
 
 interface IUserAdm_usecases {
@@ -30,6 +33,8 @@ interface IUserAdm_usecases {
 
     CreateAdm(data: IUserAdm): Promise<AdmResponses>
     GetAdminInfo(data: any, params: params): Promise<AdmResponses>
+    addCreditToClient(data: ITransaction): Promise<AdmResponses>
+    AddHourToClient(data: ITransaction, params: params): Promise<AdmResponses>
     GetAdminInfoByEmail(data: any, params: params): Promise<AdmResponses>
 
     createMachine(data: IMachines): Promise<AdmResponses>
