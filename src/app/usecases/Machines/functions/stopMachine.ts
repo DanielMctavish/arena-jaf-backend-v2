@@ -27,7 +27,7 @@ export function stopMachine(data: ISessions): Promise<AdmResponses> {
             }
 
             await prismaMachine.update(data.machine_id, {
-                status: "STOPED"
+                status: "STOPED",
             })
 
             currentClient.horas && data.elapsed_time &&

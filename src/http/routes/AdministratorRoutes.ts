@@ -25,7 +25,7 @@ router.delete("/delete-product", verifyToken, ApplyUseCase(mainAdm.deleteNewProd
 router.get("/all-clients", verifyToken, ApplyUseCase(mainAdm.listAllClients))//
 router.get("/all-machines", verifyToken, ApplyUseCase(mainAdm.listAllMachines))// worked
 router.get("/all-admins", verifyToken, ApplyUseCase(mainAdm.listAllAdmins)) //worked
-router.get("/all-locations", verifyToken, ApplyUseCase(mainAdm.listAllLocations))// worked
+router.get("/all-locations", ApplyUseCase(mainAdm.listAllLocations))// worked
 router.get("/find-session", verifyToken, ApplyUseCase(mainAdm.findSession))// in development
 router.get("/find-last-session", verifyToken, ApplyUseCase(mainAdm.findLastSession))// in development
 

@@ -10,51 +10,19 @@ const prismaLocal = new PrismaLocalRepositorie()
 const prismaUserAdm = new PrismaUserAdmRepositorie()
 
 export const createMachine = async (data: IMachines): Promise<AdmResponses> => {
-
     return new Promise(async (resolve, reject) => {
-
         try {
-            if (!data) {
-                return reject({
-                    status_code: 403,
-                    msg: "Dados inválidos"
-                })
-            }
-            if (!data.userAdmId) {
-                return reject({
-                    status_code: 403,
-                    msg: "Dados inválidos"
-                })
-            }
-            if (!data.nano_id) {
-                return reject({
-                    status_code: 403,
-                    msg: "Dados inválidos"
-                })
-            }
+            // ... existing code ...
 
-            const currentAdm = await prismaUserAdm.find(data.userAdmId)
-            const currentLocal = await prismaLocal.find(data.arenaLocalId)
+            const machineCreated = await prismaMachine.create(data);
 
-            if (!currentAdm || !currentLocal) {
-                return reject({
-                    status_code: 403,
-                    body: {
-                        msg: "Adm ou local inválidos"
-                    }
-                })
-            }
+            if (!machineCreated) return reject({ status_code: 401, msg: 'falha ao criar máquina', body: machineCreated });
 
-            const machineCreated = await prismaMachine.create(data)
-
-            if (!machineCreated) return reject({ status_code: 401, msg: 'falha ao criar máquina', body: machineCreated })
-
-            const response: AdmResponses = { status_code: 200, msg: 'máquina criada com sucesso', body: machineCreated }
+            const response: AdmResponses = { status_code: 200, msg: 'máquina criada com sucesso', body: machineCreated };
             resolve(response);
         } catch (error: any) {
-            console.log("observando error _>", error)
-            return reject({ status_code: 500, msg: 'falha ao criar máquina', body: error })
+            console.log("observando error _>", error);
+            return reject({ status_code: 500, msg: 'falha ao criar máquina', body: error });
         }
-
-    })
+    });
 }

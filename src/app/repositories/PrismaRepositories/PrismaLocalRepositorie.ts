@@ -25,20 +25,28 @@ class PrismaLocalRepositorie implements ILocalRepositorie {
         })
     }
 
-    async list(adm_id: string): Promise<Partial<IArenaLocal[]>> {
+    async list(adm_id: string): Promise<IArenaLocal[]> {
         const result = await prisma.arenaLocal.findMany({
             where: {
                 userAdmId: adm_id
             },
             include: {
-                Machines: true,
+                Machines: {
+                    include: {
+                        CurrentClient: true
+                    }
+                },
                 Sessions: {
                     include: {
                         UserAdm: true,
                         Client: true,
                         location: true,
                         Machine: {
-                            include: { sessions: true }
+                            include: {
+                                sessions: true,
+                                CurrentClient: true,
+                                UserAdm: true
+                            }
                         },
                         products: true,
                     }
@@ -49,7 +57,7 @@ class PrismaLocalRepositorie implements ILocalRepositorie {
             }
         });
 
-        return result;
+        return result as unknown as IArenaLocal[];
     }
 
 

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import IUserAdmRepositorie from "../IUserAdmRepositorie";
 import IUserAdm from "../../entities/IUserAdm";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 class PrismaUserAdmRepositorie implements IUserAdmRepositorie {
     async create(data: IUserAdm): Promise<IUserAdm> {
@@ -14,21 +14,11 @@ class PrismaUserAdmRepositorie implements IUserAdmRepositorie {
     }
 
     async find(adm_id: string): Promise<IUserAdm | null> {
-        const currentAdm = await prisma.userAdm.findUnique({
+        return await prisma.userAdm.findFirst({
             where: {
-                id: adm_id,
-            },
-            include: {
-                ArenaLocal: {
-                    include: {
-                        Machines: true
-                    }
-                },
-                Machines: true,
+                id: adm_id
             }
-        })
-
-        return currentAdm as IUserAdm
+        }) as IUserAdm | null;
     }
 
     async findByEmail(email: string): Promise<IUserAdm | null> {
@@ -61,12 +51,10 @@ class PrismaUserAdmRepositorie implements IUserAdmRepositorie {
     }
 
     async update(adm_id: string, data: Partial<IUserAdm>): Promise<IUserAdm> {
-        const currentAdm = await prisma.userAdm.update({
+        return await prisma.userAdm.update({
             where: { id: adm_id },
             data
-        })
-
-        return currentAdm as IUserAdm
+        }) as IUserAdm;
     }
 
     async delete(adm_id: string): Promise<IUserAdm> {

@@ -46,7 +46,7 @@ class MainUserClient implements IUserClient_usecases {
     CreateNewSession(data: ISessions): Promise<IClientResponses> {//
         return createNewSession(data)
     }
-    ListSessions(params: params): Promise<IClientResponses> {//
+    ListSessions(data: any, params: params): Promise<IClientResponses> {//
         return listAllSessions(params.client_id)
     }
 

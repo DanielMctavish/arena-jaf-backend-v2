@@ -6,28 +6,42 @@ const prisma = new PrismaClient();
 
 class PrismaMachineRepositorie implements IMachineRepositorie {
     async create(data: IMachines): Promise<IMachines> {
-        const { userAdmId, userColabId, arenaLocalId, sessions, ...restData } = data;
+        const { userAdmId, userColabId, arenaLocalId, sessions, client_id, ...restData } = data;
 
+        // Calcular a posição da nova máquina
+        const lastMachine = await prisma.machines.findFirst({
+            orderBy: {
+                position: 'desc'
+            }
+        });
+        const newPosition = lastMachine && lastMachine.position !== null ? lastMachine.position + 1 : 1;
+
+        let dataConditions = {
+            ...restData,
+            position: newPosition, // Definir a posição da nova máquina
+            UserAdm: {
+                connect: {
+                    id: userAdmId
+                }
+            },
+            local: {
+                connect: {
+                    id: arenaLocalId
+                }
+            },
+            CurrentClient: client_id ? {
+                connect: {
+                    id: client_id
+                }
+            } : undefined
+        }
 
         const currentMachine = await prisma.machines.create({
-            data: {
-                ...restData,
-                UserAdm: {
-                    connect: {
-                        id: userAdmId
-                    }
-                },
-                local: {
-                    connect: {
-                        id: arenaLocalId
-                    }
-                }
-            }
+            data: dataConditions
         });
 
         return currentMachine as IMachines;
     }
-
 
     async find(machine_id: string): Promise<IMachines | null> {
         const currentMachine = await prisma.machines.findFirst({
@@ -66,7 +80,12 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
                 arenaLocalId: data.arenaLocalId,
                 userAdmId: data.userAdmId,
                 userColabId: data.userColabId,
-                status: data.status
+                status: data.status,
+                CurrentClient: data.client_id ? {
+                    connect: {
+                        id: data.client_id,
+                    },
+                } : undefined
             }
         });
 
