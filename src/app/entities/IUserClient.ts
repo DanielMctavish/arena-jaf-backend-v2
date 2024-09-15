@@ -12,7 +12,7 @@ interface IUserClient {
     senha: string
     avatar_url: string
     isPlaying: boolean
-    Administrator: IUserAdm
+    Administrator?: IUserAdm
     administrator_id: string
     created_at: Date
     updated_at: Date

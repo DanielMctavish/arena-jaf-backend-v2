@@ -38,6 +38,7 @@ app.use('/machines', machineRoutes);
 
 
 serverHttp.listen(process.env.PORT, () => {
+    console.clear()
     console.log('[ Arena 1.0] Server running on PORT: ', process.env.PORT)
 });
 

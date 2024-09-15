@@ -55,6 +55,7 @@ model UserClient {
   Sessions         Sessions[]
   Transactions     Transactions[]
   Events           IEvents[]
+  Machines         Machines[]
   isPlaying        Boolean
   created_at       DateTime       @default(now())
   updated_at       DateTime       @default(now()) @updatedAt
@@ -126,20 +127,23 @@ model Transactions {
 }
 
 model Machines {
-  id           String             @id @default(cuid())
-  nano_id      String
-  connection   MACHINE_CONNECTION
-  status       MACHINE_STATUS
-  type         MACHINE_TYPE
-  UserAdm      UserAdm            @relation(fields: [userAdmId], references: [id])
-  userAdmId    String
-  UserColab    UserColab?         @relation(fields: [userColabId], references: [id])
-  userColabId  String?
-  local        ArenaLocal?        @relation(fields: [arenaLocalId], references: [id])
-  arenaLocalId String
-  sessions     Sessions[]
-  created_at   DateTime           @default(now())
-  updated_at   DateTime           @default(now()) @updatedAt
+  id            String             @id @default(cuid())
+  position      Int?
+  CurrentClient UserClient?        @relation(fields: [client_id], references: [id])
+  client_id     String?
+  nano_id       String
+  connection    MACHINE_CONNECTION
+  status        MACHINE_STATUS
+  type          MACHINE_TYPE
+  UserAdm       UserAdm            @relation(fields: [userAdmId], references: [id])
+  userAdmId     String
+  UserColab     UserColab?         @relation(fields: [userColabId], references: [id])
+  userColabId   String?
+  local         ArenaLocal?        @relation(fields: [arenaLocalId], references: [id])
+  arenaLocalId  String
+  sessions      Sessions[]
+  created_at    DateTime           @default(now())
+  updated_at    DateTime           @default(now()) @updatedAt
 }
 
 model IEvents {

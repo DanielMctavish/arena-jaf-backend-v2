@@ -1,10 +1,14 @@
 import IArenaLocal from "./IArenaLocal";
 import ISessions from "./ISessions";
 import IUserAdm from "./IUserAdm";
+import IUserClient from "./IUserClient";
 import IUserColab from "./IUserColab";
 
 interface IMachines {
     id?: string;
+    position?: number; 
+    CurrentClient?: IUserClient
+    client_id?: string
     nano_id: string
     connection: MACHINE_CONNECTION
     status: MACHINE_STATUS
@@ -19,7 +23,6 @@ interface IMachines {
     created_at?: Date
     updated_at?: Date
 }
-
 
 const MACHINE_CONNECTION: { [x: string]: 'DISCONECTED' | 'CONECTED' } = {
     DISCONECTED: 'DISCONECTED',

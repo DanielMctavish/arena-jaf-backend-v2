@@ -1,12 +1,14 @@
 import { FilePhoto } from "../../utils/Firebase/FirebaseOperations"
 import IProducts from "../entities/IProducts"
 import { AdmResponses, params } from "./IUserAdm_usecases"
+import { METHOD_PAYMENT } from "../entities/ITransaction" // Import METHOD_PAYMENT
 
 interface IBuyProduct {
     product_id: string
     client_id: string
     quantity: number
     value: number
+    method: METHOD_PAYMENT // Change type to METHOD_PAYMENT
 }
 
 interface IProduct_usecases {

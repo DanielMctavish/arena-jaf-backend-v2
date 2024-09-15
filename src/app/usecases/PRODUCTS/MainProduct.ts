@@ -10,35 +10,32 @@ import { listProductsByOwner } from "./functions/ListProductsByOwner";
 import { registerNewProduct } from "./functions/RegisterNewProduct";
 import { buyProduct } from "./Shop/BuyProduct";
 
-
-
 class MainProduct implements IProduct_usecases {
     RegisterNewProduct(data: IProducts): Promise<AdmResponses> {
-        return registerNewProduct(data)
+        return registerNewProduct(data);
     }
     ListProducts(data: any, params: params): Promise<AdmResponses> {
-        return listProductsByOwner(params.owner_id)
+        return listProductsByOwner(params.owner_id);
     }
     UpdateNewProduct(data: IProducts, params: params): Promise<AdmResponses> {
-        return updateNewProduct(params.product_id, data)
+        return updateNewProduct(params.product_id, data);
     }
     DeleteNewProduct(data: any, params: params): Promise<AdmResponses> {
-        return deleteNewProduct(params.product_id)
+        return deleteNewProduct(params.product_id);
     }
     //SHOP
 
     BuyProduct(data: IBuyProduct): Promise<AdmResponses> {
-        return buyProduct(data)
+        return buyProduct(data);
     }
 
     //FIREBASE
     UploadProductCoverImg(data: any, params: params, File: FilePhoto): Promise<AdmResponses> {
-        return firebaseUploadProductCover(File)
+        return firebaseUploadProductCover(File);
     }
     DeleteProductCoverImg(data: any, params: params): Promise<AdmResponses> {
-        return firebaseDeleteProductCover(params)
+        return firebaseDeleteProductCover(params);
     }
-    
 }
 
 export default MainProduct;

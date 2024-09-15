@@ -90,7 +90,8 @@ class PrismaSessionRepositorie implements ISessionRepositorie {
             },
             include: {
                 Machine: true,
-                Client: true
+                Client: true,
+                location: true
             },
             orderBy: {
                 created_at: 'desc'

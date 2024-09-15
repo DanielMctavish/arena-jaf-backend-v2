@@ -102,6 +102,7 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
             //01 CLIENT...PLAY.................................................................
             await prismaMachine.update(currentMachine, {
                 status: 'RUNNING',
+                client_id: currenClient.id
             });
 
             const timeStarted = dayjs().toDate();

@@ -2,12 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import ITransactionRepositorie from "../ITransactionRepositorie";
 import ITransaction from "../../entities/ITransaction";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 class PrismaTransactionRepositorie implements ITransactionRepositorie {
     async create(data: ITransaction): Promise<ITransaction> {
-
-        const { userAdmId, userClientId, ...restData } = data
+        const { userAdmId, userClientId, ...restData } = data;
 
         return await prisma.transactions.create({
             data: {
@@ -23,7 +22,7 @@ class PrismaTransactionRepositorie implements ITransactionRepositorie {
                     }
                 }
             }
-        })
+        });
     }
 
     async find(transaction_id: string): Promise<ITransaction | null> {
@@ -31,29 +30,35 @@ class PrismaTransactionRepositorie implements ITransactionRepositorie {
             where: {
                 id: transaction_id
             }
-        })
+        });
     }
-    async list(adm_id?: string): Promise<ITransaction[]> {
 
+    async list(adm_id?: string): Promise<ITransaction[]> {
         return await prisma.transactions.findMany({
             where: {
                 userAdmId: adm_id
-            }, orderBy: {
+            },
+            orderBy: {
                 created_at: 'desc'
+            },
+            include: {
+                Client: true,
+                UserAdm: true // Include UserAdm to get admin info
             }
-        })
-
+        });
     }
+
     async update(transaction_id: string, data: Partial<ITransaction>): Promise<ITransaction> {
         return await prisma.transactions.update({
             where: { id: transaction_id },
             data
-        })
+        });
     }
+
     async delete(transaction_id: string): Promise<ITransaction> {
         return await prisma.transactions.delete({
             where: { id: transaction_id }
-        })
+        });
     }
 }
 
