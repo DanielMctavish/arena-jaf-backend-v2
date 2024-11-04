@@ -8,6 +8,7 @@ const mainMachine = new MainMachines()
 
 router.post('/start-machine', verifyToken, ApplyUseCase(mainMachine.Start))
 router.post('/stop-machine', verifyToken, ApplyUseCase(mainMachine.Stop))
+router.patch('/update-machine', verifyToken, ApplyUseCase(mainMachine.UpdateMachine))//in development...
 router.get("/find-machine", verifyToken, ApplyUseCase(mainMachine.FindMachine))
 
 export default router;
