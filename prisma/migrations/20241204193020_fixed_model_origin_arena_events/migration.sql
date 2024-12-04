@@ -1,8 +1,14 @@
 -- CreateEnum
+CREATE TYPE "EVENT_TYPE" AS ENUM ('VIP', 'PREMIUM', 'PRO', 'GOLD');
+
+-- CreateEnum
 CREATE TYPE "SESSION_STATUS" AS ENUM ('RUNNING', 'PAUSED');
 
 -- CreateEnum
 CREATE TYPE "TRANSACTION_TYPE" AS ENUM ('PRODUCT', 'MACHINE_CREDIT', 'SPLIT');
+
+-- CreateEnum
+CREATE TYPE "FLOW_TYPE" AS ENUM ('IN', 'OUT');
 
 -- CreateEnum
 CREATE TYPE "METHOD_PAYMENT" AS ENUM ('DEBITO', 'CREDITO', 'PIX', 'LOCAL');
@@ -15,6 +21,9 @@ CREATE TYPE "MACHINE_CONNECTION" AS ENUM ('DISCONECTED', 'CONECTED');
 
 -- CreateEnum
 CREATE TYPE "MACHINE_STATUS" AS ENUM ('RUNNING', 'STOPED');
+
+-- CreateEnum
+CREATE TYPE "MACHINE_TYPE" AS ENUM ('PC', 'XBOX', 'PS5', 'VR', 'FLIPERAMA', 'SIMULATOR');
 
 -- CreateTable
 CREATE TABLE "UserAdm" (
@@ -49,6 +58,9 @@ CREATE TABLE "UserClient" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "saldo" DOUBLE PRECISION NOT NULL,
+    "horas" DOUBLE PRECISION,
+    "tel" TEXT,
+    "address" TEXT,
     "nome" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "senha" TEXT NOT NULL,
@@ -77,7 +89,6 @@ CREATE TABLE "ArenaLocal" (
 -- CreateTable
 CREATE TABLE "Sessions" (
     "id" TEXT NOT NULL,
-    "value" DOUBLE PRECISION NOT NULL,
     "duration" INTEGER NOT NULL,
     "timer_started_at" TIMESTAMP(3) NOT NULL,
     "timer_ended_at" TIMESTAMP(3) NOT NULL,
@@ -113,6 +124,7 @@ CREATE TABLE "Transactions" (
     "id" TEXT NOT NULL,
     "value" DOUBLE PRECISION NOT NULL,
     "transaction_type" "TRANSACTION_TYPE" NOT NULL,
+    "fluxo" "FLOW_TYPE" NOT NULL,
     "product_description" TEXT,
     "method" "METHOD_PAYMENT" NOT NULL,
     "status" "STATUS_PAYMENT" NOT NULL,
@@ -127,9 +139,12 @@ CREATE TABLE "Transactions" (
 -- CreateTable
 CREATE TABLE "Machines" (
     "id" TEXT NOT NULL,
+    "position" INTEGER,
+    "client_id" TEXT,
     "nano_id" TEXT NOT NULL,
     "connection" "MACHINE_CONNECTION" NOT NULL,
     "status" "MACHINE_STATUS" NOT NULL,
+    "type" "MACHINE_TYPE" NOT NULL,
     "userAdmId" TEXT NOT NULL,
     "userColabId" TEXT,
     "arenaLocalId" TEXT NOT NULL,
@@ -137,6 +152,22 @@ CREATE TABLE "Machines" (
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Machines_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ArenaEvents" (
+    "id" TEXT NOT NULL,
+    "responsible_name" TEXT NOT NULL,
+    "cpf" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "whatsapp" TEXT NOT NULL,
+    "event_type" "EVENT_TYPE" NOT NULL,
+    "event_price" DOUBLE PRECISION NOT NULL,
+    "localId" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ArenaEvents_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -182,6 +213,9 @@ ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_userAdmId_fkey" FOREIGN 
 ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_userClientId_fkey" FOREIGN KEY ("userClientId") REFERENCES "UserClient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Machines" ADD CONSTRAINT "Machines_client_id_fkey" FOREIGN KEY ("client_id") REFERENCES "UserClient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Machines" ADD CONSTRAINT "Machines_userAdmId_fkey" FOREIGN KEY ("userAdmId") REFERENCES "UserAdm"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -189,3 +223,6 @@ ALTER TABLE "Machines" ADD CONSTRAINT "Machines_userColabId_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "Machines" ADD CONSTRAINT "Machines_arenaLocalId_fkey" FOREIGN KEY ("arenaLocalId") REFERENCES "ArenaLocal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ArenaEvents" ADD CONSTRAINT "ArenaEvents_localId_fkey" FOREIGN KEY ("localId") REFERENCES "ArenaLocal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

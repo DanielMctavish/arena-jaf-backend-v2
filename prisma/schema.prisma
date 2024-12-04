@@ -53,7 +53,6 @@ model UserClient {
   administrator_id String
   Sessions         Sessions[]
   Transactions     Transactions[]
-  Events           IEvents[]
   Machines         Machines[]
   isPlaying        Boolean
   created_at       DateTime       @default(now())
@@ -61,18 +60,19 @@ model UserClient {
 }
 
 model ArenaLocal {
-  id                 String     @id @default(cuid())
+  id                 String        @id @default(cuid())
   nome               String
   end_url_google     String
-  proprietario       UserAdm    @relation(fields: [userAdmId], references: [id])
+  proprietario       UserAdm       @relation(fields: [userAdmId], references: [id])
   userAdmId          String
-  proprietario_colab UserColab? @relation(fields: [userColabId], references: [id])
-  userColabId        String?    @unique
+  proprietario_colab UserColab?    @relation(fields: [userColabId], references: [id])
+  userColabId        String?       @unique
   Sessions           Sessions[]
   Products           Products[]
   Machines           Machines[]
-  created_at         DateTime   @default(now())
-  updated_at         DateTime   @default(now()) @updatedAt
+  ArenaEvents        ArenaEvents[]
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @default(now()) @updatedAt
 }
 
 model Sessions {
@@ -145,15 +145,25 @@ model Machines {
   updated_at    DateTime           @default(now()) @updatedAt
 }
 
-model IEvents {
-  id          String       @id @default(cuid())
-  title       String
-  value       Float
-  members     UserClient[]
-  description String
-  cover_url   String
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @default(now()) @updatedAt
+model ArenaEvents {
+  id               String     @id @default(cuid())
+  responsible_name String
+  cpf              String
+  address          String
+  whatsapp         String
+  event_type       EVENT_TYPE
+  event_price      Float
+  local            ArenaLocal @relation(fields: [localId], references: [id])
+  localId          String
+  created_at       DateTime   @default(now())
+  updated_at       DateTime   @default(now()) @updatedAt
+}
+
+enum EVENT_TYPE {
+  VIP
+  PREMIUM
+  PRO
+  GOLD
 }
 
 enum SESSION_STATUS {

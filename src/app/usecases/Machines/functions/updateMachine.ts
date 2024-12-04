@@ -6,6 +6,8 @@ import IMachines from "../../../entities/IMachines";
 const prismaMachine = new PrismaMachineRepositorie();
 
 async function updateMachine(data: Partial<IMachines>, params: params): Promise<AdmResponses> {
+
+    console.log("data update: ", data)
     return new Promise(async (resolve, reject) => {
         try {
             // Verifica se a máquina existe
@@ -23,7 +25,10 @@ async function updateMachine(data: Partial<IMachines>, params: params): Promise<
 
             return resolve({
                 status_code: 200,
-                body: 'Máquina atualizada com sucesso',
+                body: {
+                    msg: 'Máquina atualizada com sucesso',
+                    machine: updatedMachine
+                },
             });
 
         } catch (error: any) {

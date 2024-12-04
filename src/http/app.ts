@@ -10,6 +10,7 @@ import productRoutes from './routes/ProductRoutes';
 import transactionsRoutes from './routes/TransactionRoutes';
 import sessionsRoutes from "./routes/SessionsRoutes"
 import machineRoutes from './routes/MachinesRoutes';
+import eventsRoutes from './routes/EventsRoutes';
 
 const app = express();
 const serverHttp: any = http.createServer(app);
@@ -34,8 +35,7 @@ app.use('/product', productRoutes);
 app.use('/transactions', transactionsRoutes);
 app.use('/sessions', sessionsRoutes);
 app.use('/machines', machineRoutes);
-
-
+app.use('/events', eventsRoutes);
 
 serverHttp.listen(process.env.PORT, () => {
     console.clear()
