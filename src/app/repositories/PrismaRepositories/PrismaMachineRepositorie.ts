@@ -81,6 +81,7 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
                 userAdmId: data.userAdmId,
                 userColabId: data.userColabId,
                 status: data.status,
+                connection:data.connection,
                 CurrentClient: data.client_id ? {
                     connect: {
                         id: data.client_id,
