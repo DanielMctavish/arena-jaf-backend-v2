@@ -1,5 +1,5 @@
 import firebase from "firebase-admin"
-import firebaseKey from "./arena-plataform-firebase-adminsdk-o14vz-c7a83f13de.json"
+import firebaseKey from "./arena-plataform-firebase-adminsdk-o14vz-f1b4435030.json"
 import { v4 } from "uuid"
 
 firebase.initializeApp({
