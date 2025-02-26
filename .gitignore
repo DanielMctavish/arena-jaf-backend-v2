@@ -4,3 +4,5 @@ node_modules
 
 dist
 src/utils/Firebase/*.json
+
+./utils/Firebase/*.json
