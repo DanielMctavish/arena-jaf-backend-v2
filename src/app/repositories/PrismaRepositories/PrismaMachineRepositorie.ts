@@ -54,12 +54,15 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
         return currentMachine as IMachines;
     }
 
-    async list(adm_id: string): Promise<IMachines[]> {
-
+    async list(id: string): Promise<IMachines[]> {
         const currentMachine = await prisma.machines.findMany({
             where: {
-                userAdmId: adm_id
-            }, include: {
+                OR: [
+                    { userAdmId: id },
+                    { arenaLocalId: id }
+                ]
+            },
+            include: {
                 sessions: true
             },
             orderBy: {
@@ -70,10 +73,7 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
         return currentMachine as IMachines[];
     }
 
-
-
     async update(machine_id: string, data: Partial<IMachines>): Promise<IMachines> {
-
         const currentMachine = await prisma.machines.update({
             where: { id: machine_id },
             data: {
@@ -81,12 +81,14 @@ class PrismaMachineRepositorie implements IMachineRepositorie {
                 userAdmId: data.userAdmId,
                 userColabId: data.userColabId,
                 status: data.status,
-                connection:data.connection,
-                CurrentClient: data.client_id ? {
+                connection: data.connection,
+                CurrentClient: data.client_id === "" || !data.client_id ? {
+                    disconnect: true
+                } : {
                     connect: {
-                        id: data.client_id,
-                    },
-                } : undefined
+                        id: data.client_id
+                    }
+                }
             }
         });
 

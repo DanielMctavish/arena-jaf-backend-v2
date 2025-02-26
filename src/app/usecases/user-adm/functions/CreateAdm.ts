@@ -20,6 +20,7 @@ const createAdm = (data: IUserAdm): Promise<AdmResponses> => {
             resolve({ status_code: 201, msg: 'adm criado com sucesso!', body: createdNewAdm })
 
         } catch (error: any) {
+            console.log(error)
             reject({ status_code: 500, msg: error })
         }
     })

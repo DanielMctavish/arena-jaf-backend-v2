@@ -20,7 +20,6 @@ let sessionInterval: any;
 async function startMachine(data: ISessions, params: params): Promise<AdmResponses> {
     let currentTimer: number = 0;
 
-    console.log("observando duração: ", data.duration / 60)
 
     const currentMachine: string = data.machine_id;
 
@@ -100,9 +99,9 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
             console.log('initialize session... ');
 
             //01 CLIENT...PLAY.................................................................
-            await prismaMachine.update(currentMachine, {
+            await prismaMachine.update(data.machine_id, {
                 status: 'RUNNING',
-                client_id: currenClient.id
+                client_id: data.client_id
             });
 
             const timeStarted = dayjs().toDate();

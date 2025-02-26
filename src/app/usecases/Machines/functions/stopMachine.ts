@@ -13,7 +13,7 @@ export function stopMachine(data: ISessions): Promise<AdmResponses> {
 
     return new Promise(async (resolve, reject) => {
 
-        console.log("observando data: ", data)
+        console.log("observando data: ", data.machine_id)
 
         try {
 
@@ -28,6 +28,7 @@ export function stopMachine(data: ISessions): Promise<AdmResponses> {
 
             await prismaMachine.update(data.machine_id, {
                 status: "STOPED",
+                client_id:""
             })
 
             currentClient.horas && data.elapsed_time &&
