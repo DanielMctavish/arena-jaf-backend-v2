@@ -20,10 +20,11 @@ interface ITransaction {
 
 
 //métodos para pagamento.......................................................
-const METHOD_PAYMENT: { [x: string]: 'CREDITO' | 'PIX' | 'DEBITO' | 'LOCAL' } = {
+const METHOD_PAYMENT: { [x: string]: 'CREDITO' | 'PIX' | 'DEBITO' | 'DINHEIRO' | 'LOCAL' } = {
     DEBITO: 'DEBITO',
     CREDITO: 'CREDITO',
     PIX: 'PIX',
+    DINHEIRO: 'DINHEIRO',
     LOCAL: 'LOCAL'
 }
 

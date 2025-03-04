@@ -116,7 +116,7 @@ class MainUserAdm implements IUserAdm_usecases {
         return listAllLocations(params.adm_id)
     }
 
-    deleteClient(params: params): Promise<AdmResponses> {//revisado
+    deleteClient(data: any, params: params): Promise<AdmResponses> {//revisado
         return deleteClient(params.client_id)
     }
 
