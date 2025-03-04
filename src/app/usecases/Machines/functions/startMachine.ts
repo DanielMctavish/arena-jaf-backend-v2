@@ -16,11 +16,9 @@ const prismaSession = new PrismaSessionRepositorie();
 const prismaTransaction = new PrismaTransactionRepositorie();
 const prismaClient = new PrismaUserClientRepositorie();
 
-let sessionInterval: any;
-
 async function startMachine(data: ISessions, params: params): Promise<AdmResponses> {
     let currentTimer: number = 0;
-
+    let sessionInterval: any;
 
     const currentMachine: string = data.machine_id;
 
