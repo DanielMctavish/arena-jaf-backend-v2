@@ -8,6 +8,7 @@ import PrismaUserClientRepositorie from '../../../repositories/PrismaRepositorie
 import ISessions from '../../../entities/ISessions';
 import ITransaction from '../../../entities/ITransaction';
 import { timerSessionInstance } from '../../../../http/app';
+import { stopMachine } from './stopMachine';
 
 
 const prismaMachine = new PrismaMachineRepositorie();
@@ -136,15 +137,10 @@ async function startMachine(data: ISessions, params: params): Promise<AdmRespons
                     console.log('session ended');
                     clearInterval(sessionInterval);
 
-                    await prismaMachine.update(currentMachine, {
-                        status: 'STOPED',
+                    await stopMachine({
+                        ...data,
+                        elapsed_time: data.duration * 60 // convertendo minutos para segundos
                     });
-
-                    if (currenClient.horas)
-                        await prismaClient.update(data.client_id, {
-                            isPlaying: false,
-                            horas: currenClient.horas - (data.duration / 60)
-                        })
 
                     return;
                 }
