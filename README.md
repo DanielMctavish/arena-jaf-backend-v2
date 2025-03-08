@@ -48,4 +48,64 @@ Uma API robusta para gerenciamento de arenas de jogos, desenvolvida em TypeScrip
 - Dayjs
 - Multer
 
-## 📦 Estrutura do Projeto 
+## 📦 Estrutura do Projeto
+
+src/
+├── app/
+│ ├── entities/ # Interfaces e tipos
+│ ├── repositories/ # Camada de dados
+│ └── usecases/ # Lógica de negócio
+├── http/
+│ ├── routes/ # Rotas da API
+│ └── middlewares/ # Middlewares
+├── security/ # Autenticação e validações
+└── utils/ # Utilitários
+
+
+## 🔐 Recursos de Segurança
+
+- Autenticação JWT
+- Validação de rotas
+- Tratamento de erros
+- Controle de acesso por perfil
+
+## 💾 Banco de Dados
+
+Utiliza PostgreSQL com Prisma ORM para:
+- Gestão de usuários
+- Controle de sessões
+- Histórico de transações
+- Inventário de produtos
+- Registro de eventos
+
+## 🌐 Integração WebSocket
+
+Sistema em tempo real para:
+- Status das máquinas
+- Controle de tempo das sessões
+- Notificações administrativas
+- Atualizações de status
+
+## 📝 Requisitos
+
+- Node.js 
+- PostgreSQL
+- Firebase Project (para storage)
+- Variáveis de ambiente configuradas
+
+## 🚀 Como Iniciar
+
+1. Clone o repositório
+2. Instale as dependências
+3. Configure as variáveis de ambiente
+4. Inicie o servidor
+
+
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT
+
+---
+
+⌨️ Desenvolvido com ❤️ por [DanielMctavish](https://github.com/DanielMctavish)
