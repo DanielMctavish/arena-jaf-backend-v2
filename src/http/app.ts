@@ -3,7 +3,6 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import TimerSessions from '../app/arena-cron/TimerSession';
-
 import administratorRoutes from './routes/AdministratorRoutes';
 import clientRoutes from './routes/ClientRoutes';
 import productRoutes from './routes/ProductRoutes';
